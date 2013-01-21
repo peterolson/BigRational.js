@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "big-rational",
   "version": "0.9.0",
   "author": "Peter Olson <peter.e.c.olson+npm@gmail.com>",
@@ -15,12 +15,12 @@
     "math",
     "big",
     "bignum",
-	"bignumber",
-	"bigrational",
-	"rational",
-	"arbitrary",
-	"precision",
-	"arithmetic"
+    "bignumber",
+    "bigrational",
+    "rational",
+    "arbitrary",
+    "precision",
+    "arithmetic"
   ],
   "dependencies" : {
 	"big-integer" :  "1.1.x"

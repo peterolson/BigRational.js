@@ -2,7 +2,7 @@
 
 var bigRat = (function () {
     if (typeof require !== "undefined") {
-        bigInt = require(bigInt);
+        bigInt = require("big-integer");
     }
     function gcd(a, b) {
         if(b.equals(0)) {

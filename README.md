@@ -116,9 +116,9 @@ Performs addition.
 
  - `bigRat("1/3").add(1, 3).equals(2, 3)`
 
-`ceil`
+`ceil(toBigInt?)`
 ---
-Rounds up to the nearest integer.
+Rounds up to the nearest integer. If the `toBigInt` argument is `true`, then it will return a bigInteger instead of a bigRational.
 
  - `bigRat(12345.4).ceil().equals(12346)`
 
@@ -142,9 +142,9 @@ Checks if two numbers are equal.
 
  - `bigRat(1).equals(1)`
 
-`floor`
+`floor(toBigInt?)`
 ---
-Rounds down to the nearest integer.
+Rounds down to the nearest integer. If the `toBigInt` argument is `true`, then it will return a bigInteger instead of a bigRational.
 
  - `bigRat(987.99999).floor().equals(987)`
 
@@ -228,9 +228,10 @@ Alias for `divide`.
 ---
 Alias for `add`.
 
-`round`
+`round(toBigInt?)`
 ---
 Rounds a number to the nearest integer. If the number is exactly half-way between two integers, it will round up.
+If the `toBigInt` argument is `true`, then it will return a bigInteger instead of a bigRational.
 
  - bigRat(54345.12566).round().equals(54345)
  - bigRat(1234567.5).round().equals(1234568)
