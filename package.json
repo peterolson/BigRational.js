@@ -1,0 +1,32 @@
+﻿{
+  "name": "big-rational",
+  "version": "0.9.0",
+  "author": "Peter Olson <peter.e.c.olson+npm@gmail.com>",
+  "description": "An arbitrary length rational number library for Javascript",
+  "contributors": [],
+  "bin": {},
+  "scripts": {},
+  "main": "./BigRational",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:peterolson/BigRational.js.git"
+  },
+  "keywords": [
+    "math",
+    "big",
+    "bignum",
+	"bignumber",
+	"bigrational",
+	"rational",
+	"arbitrary",
+	"precision",
+	"arithmetic"
+  ],
+  "dependencies" : {
+	"big-integer" :  "1.1.x"
+  }, 
+  "license": "WTFPL",
+  "engines": {
+    "node": ">=0.6"
+  }
+}
