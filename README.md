@@ -5,6 +5,22 @@
 
 A *rational number* is stored internally as a pair of two big integers. Because of this, BigRational.js depends on my big integer library, [BigInteger.js](https://github.com/peterolson/BigInteger.js).
 
+Installation
+---
+If you are using a browser, you can download [BigRational.js from GitHub](http://peterolson.github.com/BigRational.js/BigInt_BigRat.min.js) or just hotlink to it.
+
+    <script src="http://peterolson.github.com/BigRational.js/BigInt_BigRat.min.js"></script>
+
+This will include both the `bigInt` library and the `bigRat` library. If you want to reference them separately, you can use the [non-combined BigRational.js script](http://peterolson.github.com/BigRational.js/BigRational.min.js).
+
+If you are using node, you can install BigRational.js with [npm](https://npmjs.org/).
+
+    npm install big-rational
+
+Then you can include it in your code
+
+    var bigRat = require("big-rational");
+
 `bigRat(num?, denom?)`
 ---
 You can create a bigRational by calling the `bigRat` function. You can pass in up to two paramers.
@@ -60,7 +76,7 @@ There are three constants already stored that you do not have to construct with 
  - `bigRat.zero`, equivalent to `bigRat(0)`
  - `bigRat.minusOne`, equivalent to `bigRat(-1)`
 
- Properties
+Properties
 ===
 
 You can obtain the numerator and denominator of a bigRational with these properties:
