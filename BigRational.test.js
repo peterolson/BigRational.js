@@ -43,7 +43,8 @@ var testResults = (function () {
         "-1/1000 is negative": bigRat("-1/1000").isNegative(),
         "0 is zero": bigRat("0").isZero(),
         "1000000000000 is not zero": !bigRat("1000000000000").isZero(),
-        "valueOf 1/4 + 3/4 = 1": bigRat(1,4) + bigRat(3/4) === 1
+        "valueOf 1/4 + 3/4 = 1": bigRat(1, 4) + bigRat(3 / 4) === 1,
+        "valueOf 1/7 = 1/7": bigRat(1, 7).valueOf() === 1/7
     };
     for(var i in asserts) {
         var result = i + ": ";

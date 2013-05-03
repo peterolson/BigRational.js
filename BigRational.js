@@ -148,7 +148,7 @@ var bigRat = (function () {
                 return o.num.toString() + "/" + o.denom.toString();
             },
             valueOf: function() {
-                return +obj.toDecimal();
+                return obj.num / obj.denom;
             },
             toDecimal: function (digits) {
                 digits = digits || 10;
