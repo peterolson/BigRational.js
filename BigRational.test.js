@@ -44,7 +44,8 @@ var testResults = (function () {
         "0 is zero": bigRat("0").isZero(),
         "1000000000000 is not zero": !bigRat("1000000000000").isZero(),
         "valueOf 1/4 + 3/4 = 1": bigRat(1, 4) + bigRat(3 / 4) === 1,
-        "valueOf 1/7 = 1/7": bigRat(1, 7).valueOf() === 1/7
+        "valueOf 1/7 = 1/7": bigRat(1, 7).valueOf() === 1 / 7,  // Issue #1
+        "1/9 toDecimal = '0.9'": bigRat(9, 10).toDecimal() === "0.9" // Issue #2
     };
     for(var i in asserts) {
         var result = i + ": ";
