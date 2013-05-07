@@ -158,7 +158,7 @@ var bigRat = (function () {
                 var decPart = "";
                 while(decPart.length <= digits) {
                     var i;
-                    for(i = 0; i < 10; i++) {
+                    for(i = 0; i <= 10; i++) {
                         if(parse(decPart + i, "1" + Array(decPart.length + 2).join("0")).greater(remainder)) {
                             i--;
                             break;
