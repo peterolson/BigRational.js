@@ -69,6 +69,9 @@ var bigRat = (function () {
             plus: function (n, d) {
                 return obj.add(n, d);
             },
+            pow: function (p) {
+                return create(obj.num.pow(p), obj.denom.pow(p));
+            },
             negate: function () {
                 var num = bigInt.zero.minus(obj.num);
                 return create(num, obj.denom);
