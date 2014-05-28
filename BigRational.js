@@ -214,7 +214,9 @@ var bigRat = (function () {
             }
             var exp = "1" + Array(length + 1).join("0");
             var decPart = create(bigInt(parts[1]), bigInt(exp));
-            return intPart.add(decPart);
+            intPart = intPart.add(decPart);
+	    if (parts[0][0] === '-') intPart = intPart.negate();
+    	    return intPart;
         }
         return create(bigInt(n));
     }
