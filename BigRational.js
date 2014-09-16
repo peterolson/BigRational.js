@@ -181,7 +181,7 @@ var bigRat = (function () {
         return parse(n, d);
     }
     function parseDecimal(n) {
-        var parts = n.split("e");
+        var parts = n.split(/e/i);
         if(parts.length > 2) {
             throw new Error("Invalid input: too many 'e' tokens");
         }
