@@ -47,7 +47,8 @@ var testResults = (function () {
         "valueOf 1/7 = 1/7": bigRat(1, 7).valueOf() === 1 / 7,  // Issue #1
         "9/10 toDecimal = '0.9'": bigRat(9, 10).toDecimal() === "0.9", // Issue #2
         "-1 - -0.9 = -0.1": bigRat(-1).subtract(-0.9).valueOf() === -0.1, // Issue #9
-        "9.999701656077919E307 == 9.999701656077919e307": bigRat("9.999701656077919E307").equals("9.999701656077919e307") // Issue #11
+        "9.999701656077919E307 = 9.999701656077919e307": bigRat("9.999701656077919E307").equals("9.999701656077919e307"), // Issue #11
+        "55/-75 toDecimal = -55/75 toDecimal": bigRat("55", "-75").toDecimal() === bigRat("-55", "75").toDecimal() // Issue #10
     };
     for(var i in asserts) {
         var result = i + ": ";

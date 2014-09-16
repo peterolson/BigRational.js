@@ -154,7 +154,7 @@ var bigRat = (function () {
                 digits = digits || 10;
                 var n = obj.num.divmod(obj.denom);
                 var intPart = n.quotient.toString();
-                var remainder = parse(n.remainder, obj.denom);
+                var remainder = parse(n.remainder.abs(), obj.denom);
                 var decPart = "";
                 while(decPart.length <= digits) {
                     var i;
