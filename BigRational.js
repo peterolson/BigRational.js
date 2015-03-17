@@ -145,7 +145,10 @@ var bigRat = (function () {
             },
             toString: function () {
                 var o = obj.reduce();
-                return o.num.toString() + "/" + o.denom.toString();
+                if (o.denom.equals(1))
+                    return o.num.toString();
+                else
+                    return o.num.toString() + "/" + o.denom.toString();
             },
             valueOf: function() {
                 return obj.num / obj.denom;
