@@ -1,4 +1,4 @@
-﻿BigRational.js
+BigRational.js
 =========
 
 **BigRational.js** is an arbitrary-length rational number library for Javascript, allowing arithmetic operations on rational numbers of unlimited size, notwithstanding memory and time limitations.
@@ -228,20 +228,26 @@ Alias for `divide`.
 ---
 Alias for `add`.
 
+`reciprocate`
+---
+Returns the reciprocal of a number.
+
+ - `bigRat("3/2").reciprocate()` => `bigRat("2/3")`
+
 `round(toBigInt?)`
 ---
 Rounds a number to the nearest integer. If the number is exactly half-way between two integers, it will round up.
 If the `toBigInt` argument is `true`, then it will return a bigInteger instead of a bigRational.
 
- - bigRat(54345.12566).round().equals(54345)
- - bigRat(1234567.5).round().equals(1234568)
- - bigRat(69.8).round().equals(70)
+ - `bigRat(54345.12566).round().equals(54345)`
+ - `bigRat(1234567.5).round().equals(1234568)`
+ - `bigRat(69.8).round().equals(70)`
 
 `subtract`
 ---
 Performs subtraction.
 
- - `bigRat(3).subtract(2).equals(1)
+ - `bigRat(3).subtract(2).equals(1)`
 
 `times`
 ---
