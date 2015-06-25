@@ -1,182 +1,190 @@
-
-
 var bigRat = (function () {
-    if (typeof require !== "undefined") {
+    if (typeof require === "function") {
         bigInt = require("big-integer");
     }
-    function gcd(a, b) {
-        if(b.equals(0)) {
-            return a;
+
+    function BigRational(num, denom) {
+        // Alias properties kept for backwards compatability
+        if (denom.isZero()) throw "Denominator cannot be 0.";
+        this.numerator = this.num = num;
+        this.denominator = this.denom = denom;
+    }
+
+    var gcd = bigInt.gcd,
+        lcm = bigInt.lcm;
+
+    function reduce(n, d) {
+        var divisor = gcd(n, d),
+            num = n.over(divisor),
+            denom = d.over(divisor);
+        if (denom.isNegative()) {
+            return new BigRational(num.negate(), denom.negate());
         }
-        return gcd(b, a.mod(b));
+        return new BigRational(num, denom);
     }
-    function lcm(a, b) {
-        return a.times(b).divide(gcd(a, b));
-    }
-    function create(numerator, denominator, preventReduce) {
-        denominator = denominator || bigInt(1);
-        preventReduce = preventReduce || false;
-        var obj = {
-            numerator: numerator,
-            denominator: denominator,
-            num: numerator,
-            denom: denominator,
-            reduce: function () {
-                var divisor = gcd(obj.num, obj.denom);
-                var num = obj.num.divide(divisor);
-                var denom = obj.denom.divide(divisor);
-                if(denom.lesser(0)) {
-                    num = num.times(-1);
-                    denom = denom.times(-1);
-                }
-                if(denom.equals(0)) {
-                    throw "Denominator cannot be 0.";
-                }
-                return create(num, denom, true);
-            },
-            abs: function () {
-                if (obj.isPositive()) return obj;
-                return obj.negate();
-            },
-            multiply: function (n, d) {
-                n = interpret(n, d);
-                return create(obj.num.times(n.num), obj.denom.times(n.denom));
-            },
-            times: function (n, d) {
-                return obj.multiply(n, d);
-            },
-            divide: function (n, d) {
-                n = interpret(n, d);
-                return create(obj.num.times(n.denom), obj.denom.times(n.num));
-            },
-            over: function (n, d) {
-                return obj.divide(n, d);
-            },
-            mod: function (n, d) {
-                var n = interpret(n, d);
-                return obj.minus(n.times(obj.over(n).floor()));
-            },
-            add: function (n, d) {
-                n = interpret(n, d);
-                var multiple = lcm(obj.denom, n.denom);
-                var a = multiple.divide(obj.denom);
-                var b = multiple.divide(n.denom);
 
-                a = obj.num.times(a);
-                b = n.num.times(b);
-                return create(a.add(b), multiple);
-            },
-            plus: function (n, d) {
-                return obj.add(n, d);
-            },
-            negate: function () {
-                var num = bigInt.zero.minus(obj.num);
-                return create(num, obj.denom);
-            },
-            subtract: function (n, d) {
-                n = interpret(n, d);
-                return obj.add(n.negate());
-            },
-            minus: function (n, d) {
-                return obj.subtract(n, d);
-            },
-            isPositive: function () {
-                return obj.num.isPositive();
-            },
-            isNegative: function () {
-                return !obj.isPositive();
-            },
-            isZero: function () {
-                return obj.equals(0, 1);
-            },
-            compare: function (n, d) {
-                n = interpret(n, d);
-                if(obj.num.equals(n.num) && obj.denom.equals(n.denom)) {
-                    return 0;
-                }
-                var newDenom = obj.denom.times(n.denom);
-                var comparison = newDenom.greater(0) ? 1 : -1;
-                if(obj.num.times(n.denom).greater(n.num.times(obj.denom))) {
-                    return comparison;
-                } else {
-                    return -comparison;
-                }
-            },
-            equals: function (n, d) {
-                return obj.compare(n, d) === 0;
-            },
-            notEquals: function (n, d) {
-                return !obj.equals(n, d);
-            },
-            lesser: function (n, d) {
-                return obj.compare(n, d) < 0;
-            },
-            lesserOrEquals: function (n, d) {
-                return obj.compare(n, d) <= 0;
-            },
-            greater: function (n, d) {
-                return obj.compare(n, d) > 0;
-            },
-            greaterOrEquals: function (n, d) {
-                return obj.compare(n, d) >= 0;
-            },
-            floor: function (toBigInt) {
-                var floor = obj.num.over(obj.denom);
-                if(toBigInt) {
-                    return floor;
-                }
-                return create(floor);
-            },
-            ceil: function (toBigInt) {
-                var div = obj.num.divmod(obj.denom);
-                var ceil;
+    BigRational.prototype.add = function (n, d) {
+        var v = interpret(n, d),
+            multiple = lcm(this.denom, v.denom),
+            a = multiple.divide(this.denom),
+            b = multiple.divide(v.denom);
 
-                ceil = div.quotient;
-                if(div.remainder.notEquals(0)) {
-                    ceil = ceil.add(1);
+        a = this.num.times(a);
+        b = v.num.times(b);
+        return reduce(a.add(b), multiple);
+    };
+    BigRational.prototype.plus = BigRational.prototype.add;
+
+    BigRational.prototype.subtract = function (n, d) {
+        var v = interpret(n, d);
+        return this.add(v.negate());
+    };
+    BigRational.prototype.minus = BigRational.prototype.subtract;
+
+    BigRational.prototype.multiply = function (n, d) {
+        var v = interpret(n, d);
+        return reduce(this.num.times(v.num), this.denom.times(v.denom));
+    };
+    BigRational.prototype.times = BigRational.prototype.multiply;
+
+    BigRational.prototype.divide = function (n, d) {
+        var v = interpret(n, d);
+        return reduce(this.num.times(v.denom), this.denom.times(v.num));
+    };
+    BigRational.prototype.over = BigRational.prototype.divide;
+
+    BigRational.prototype.reciprocate = function () {
+        return new BigRational(this.denom, this.num);
+    };
+    BigRational.prototype.mod = function (n, d) {
+        var v = interpret(n, d);
+        return this.minus(v.times(this.over(v).floor()));
+    };
+
+    BigRational.prototype.floor = function (toBigInt) {
+        var divmod = this.num.divmod(this.denom),
+            floor;
+        if (divmod.remainder.isZero() || !divmod.quotient.sign) {
+            floor = divmod.quotient;
+        }
+        else floor = divmod.quotient.prev();
+        if (toBigInt) return floor;
+        return new BigRational(floor, bigInt[1]);
+    };
+    BigRational.prototype.ceil = function (toBigInt) {
+        var divmod = this.num.divmod(this.denom),
+            ceil;
+        if (divmod.remainder.isZero() || divmod.quotient.sign) {
+            ceil = divmod.quotient;
+        }
+        else ceil = divmod.quotient.next();
+        if (toBigInt) return ceil;
+        return new BigRational(ceil, bigInt[1]);
+    };
+    BigRational.prototype.round = function (toBigInt) {
+        return this.add(1, 2).floor(toBigInt);
+    };
+
+    BigRational.prototype.compareAbs = function (n, d) {
+        var v = interpret(n, d);
+        if (this.denom.equals(v.denom)) {
+            return this.num.compareAbs(v.num);
+        }
+        return this.num.times(v.denom).compareAbs(v.num.times(this.denom));
+    };
+    BigRational.prototype.compare = function (n, d) {
+        var v = interpret(n, d);
+        if (this.denom.equals(v.denom)) {
+            return this.num.compare(v.num);
+        }
+        var comparison = this.denom.sign === v.denom.sign ? 1 : -1;
+        return comparison * this.num.times(v.denom).compare(v.num.times(this.denom));
+    };
+    BigRational.prototype.compareTo = BigRational.prototype.compare;
+
+    BigRational.prototype.equals = function (n, d) {
+        return this.compare(n, d) === 0;
+    };
+    BigRational.prototype.eq = BigRational.prototype.equals;
+
+    BigRational.prototype.notEquals = function (n, d) {
+        return this.compare(n, d) !== 0;
+    };
+    BigRational.prototype.neq = BigRational.prototype.notEquals;
+
+    BigRational.prototype.lesser = function (n, d) {
+        return this.compare(n, d) < 0;
+    };
+    BigRational.prototype.lt = BigRational.prototype.lesser;
+
+    BigRational.prototype.lesserOrEquals = function (n, d) {
+        return this.compare(n, d) <= 0;
+    };
+    BigRational.prototype.leq = BigRational.prototype.lesserOrEquals;
+
+    BigRational.prototype.greater = function (n, d) {
+        return this.compare(n, d) > 0;
+    };
+    BigRational.prototype.gt = BigRational.prototype.greater;
+
+    BigRational.prototype.greaterOrEquals = function (n, d) {
+        return this.compare(n, d) >= 0;
+    };
+    BigRational.prototype.geq = BigRational.prototype.greaterOrEquals;
+
+    BigRational.prototype.abs = function () {
+        if (this.isPositive()) return this;
+        return this.negate();
+    };
+    BigRational.prototype.negate = function () {
+        if (this.denom.sign) {
+            return new BigRational(this.num, this.denom.negate());
+        }
+        return new BigRational(this.num.negate(), this.denom);
+    };
+    BigRational.prototype.isNegative = function () {
+        return this.num.sign !== this.denom.sign;
+    };
+    BigRational.prototype.isPositive = function () {
+        return this.num.sign === this.denom.sign;
+    };
+    BigRational.prototype.isZero = function () {
+        return this.num.isZero();
+    };
+
+    BigRational.prototype.toDecimal = function (digits) {
+        digits = digits || 10;
+        var n = this.num.divmod(this.denom);
+        var intPart = n.quotient.toString();
+        var remainder = parse(n.remainder.abs(), this.denom);
+        var decPart = "";
+        while (decPart.length <= digits) {
+            var i;
+            for (i = 0; i <= 10; i++) {
+                if (parse(decPart + i, "1" + Array(decPart.length + 2).join("0")).greater(remainder)) {
+                    i--;
+                    break;
                 }
-                if(toBigInt) {
-                    return ceil;
-                }
-                return create(ceil);
-            },
-            round: function (toBigInt) {
-                return obj.add(1, 2).floor(toBigInt);
-            },
-            toString: function () {
-                var o = obj.reduce();
-                return o.num.toString() + "/" + o.denom.toString();
-            },
-            valueOf: function() {
-                return obj.num / obj.denom;
-            },
-            toDecimal: function (digits) {
-                digits = digits || 10;
-                var n = obj.num.divmod(obj.denom);
-                var intPart = n.quotient.toString();
-                var remainder = parse(n.remainder.abs(), obj.denom);
-                var decPart = "";
-                while(decPart.length <= digits) {
-                    var i;
-                    for(i = 0; i <= 10; i++) {
-                        if(parse(decPart + i, "1" + Array(decPart.length + 2).join("0")).greater(remainder)) {
-                            i--;
-                            break;
-                        }
-                    }
-                    decPart += i;
-                }
-                while(decPart.slice(-1) === "0") {
-                    decPart = decPart.slice(0, -1);
-                }
-                if(decPart === "") {
-                    return intPart;
-                }
-                return intPart + "." + decPart;
             }
-        };
-        return preventReduce ? obj : obj.reduce();
-    }
+            decPart += i;
+        }
+        while (decPart.slice(-1) === "0") {
+            decPart = decPart.slice(0, -1);
+        }
+        if (decPart === "") {
+            return intPart;
+        }
+        return intPart + "." + decPart;
+    };
+
+    BigRational.prototype.toString = function () {
+        return String(this.num) + "/" + String(this.denom);
+    };
+    
+    BigRational.prototype.valueOf = function () {
+        return this.num / this.denom;
+    };
+
     function interpret(n, d) {
         return parse(n, d);
     }
@@ -195,7 +203,7 @@ var bigRat = (function () {
                 parts[1] = parts[1].slice(1);
             }
             var significand = parseDecimal(parts[0]);
-            var exponent = create(bigInt(10).pow(parts[1]));
+            var exponent = new BigRational(bigInt(10).pow(parts[1]), bigInt[1]);
             if(isPositive) {
                 return significand.times(exponent);
             } else {
@@ -207,36 +215,35 @@ var bigRat = (function () {
             throw new Error("Invalid input: too many '.' tokens");
         }
         if(parts.length > 1) {
-            var intPart = create(bigInt(parts[0]));
+            var intPart = new BigRational(bigInt(parts[0]), bigInt[1]);
             var length = parts[1].length;
             while(parts[1][0] === "0") {
                 parts[1] = parts[1].slice(1);
             }
             var exp = "1" + Array(length + 1).join("0");
-            var decPart = create(bigInt(parts[1]), bigInt(exp));
+            var decPart = reduce(bigInt(parts[1]), bigInt(exp));
             intPart = intPart.add(decPart);
 	    if (parts[0][0] === '-') intPart = intPart.negate();
     	    return intPart;
         }
-        return create(bigInt(n));
+        return new BigRational(bigInt(n), bigInt[1]);
     }
     function parse(a, b) {
         if(!a) {
-            return create(bigInt(0));
+            return new BigRational(bigInt(0), bigInt[1]);
         }
         if(b) {
-            return create(bigInt(a), bigInt(b));
+            return reduce(bigInt(a), bigInt(b));
         }
-        if(typeof a === "object") {
-            if(a.instanceofBigInt) {
-                return create(a);
-            }
-            return a;
+        if (bigInt.isInstance(a)) {
+            return new BigRational(a, bigInt[1]);
         }
+        if (a instanceof BigRational) return a;
+
         var num;
         var denom;
 
-        var text = a + "";
+        var text = String(a);
         var texts = text.split("/");
         if(texts.length > 2) {
             throw new Error("Invalid input: too many '/' tokens");
@@ -255,9 +262,9 @@ var bigRat = (function () {
                     num = num.subtract(parts[1]);
                 }
                 denom = bigInt(texts[1]);
-                return create(num, denom).reduce();
+                return reduce(num, denom);
             }
-            return create(bigInt(texts[0]), bigInt(texts[1]));
+            return reduce(bigInt(texts[0]), bigInt(texts[1]));
         }
         return parseDecimal(text);
     }
