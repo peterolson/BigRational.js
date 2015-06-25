@@ -1,5 +1,6 @@
 ;var bigRat = (function () {
     "use strict";
+    var bigInt;
     if (typeof require === "function") {
         bigInt = require("big-integer");
     }
