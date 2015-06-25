@@ -1,6 +1,6 @@
 {
   "name": "big-rational",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "author": "Peter Olson <peter.e.c.olson+npm@gmail.com>",
   "description": "An arbitrary length rational number library for Javascript",
   "contributors": [],
@@ -23,7 +23,7 @@
     "arithmetic"
   ],
   "dependencies" : {
-	"big-integer" :  "1.3.x"
+	"big-integer" :  "1.4.x"
   }, 
   "license": "WTFPL",
   "engines": {
