@@ -122,6 +122,14 @@ Rounds up to the nearest integer. If the `toBigInt` argument is `true`, then it 
 
  - `bigRat(12345.4).ceil().equals(12346)`
 
+`compareAbs`
+---
+Performs a comparison between the absolute values of two numbers. If the numbers are of equal magnitude, it returns `0`. If the first number is of greater magnitude, it returns `1`. Otherwise, it returns `-1`.
+
+ - `bigRat(-3).compareAbs(3) === 0`
+ - `bigRat(3).compareAbs(-4) === -1`
+ - `bigRat(-4).compareAbs(3) === 1`
+
 `compare`
 ---
 Performs a comparison between two numbers. If the numbers are equal, it returns `0`. If the first number is greater, it returns `1`. If the first number is lesser, it returns `-1`.
@@ -129,12 +137,20 @@ Performs a comparison between two numbers. If the numbers are equal, it returns 
  - `bigRat(3).compare(3) === 0`
  - `bigRat(3).compare(4) === -1`
  - `bigRat(4).compare(3) === 1`
+ 
+`compareTo`
+---
+Alias for the `compare` function.
 
 `divide`
 ---
 Performs division.
 
  - `bigRat("354.25").divide(1, 4).equals(1417)`
+ 
+`eq`
+---
+Alias for the `equals` function.
 
 `equals`
 ---
@@ -148,6 +164,10 @@ Rounds down to the nearest integer. If the `toBigInt` argument is `true`, then i
 
  - `bigRat(987.99999).floor().equals(987)`
 
+`geq`
+---
+Alias for the `greaterOrEquals` function.
+
 `greater`
 ---
 Checks if the first number is greater than the second
@@ -160,6 +180,10 @@ Checks if the first number is greater than or equal to the second
 
  - `bigRat(5).greaterOrEquals(5)`
  - `bigRat(5).greaterOrEquals(4)`
+
+`gt`
+---
+Alias for the `greater` function.
 
 `isNegative`
 ---
@@ -191,6 +215,14 @@ Checks if the first number is lesser than or equal to the second
 
  - `bigRat(4).lesserOrEquals(4)`
  - `bigRat(4).lesserOrEquals(5)`
+ 
+`leq`
+---
+Alias for the `lesserOrEquals` function.
+
+`lt`
+---
+Alias for the `lesser` function.
 
 `minus`
 ---
@@ -214,6 +246,10 @@ Returns the negation of a number.
 
  - `bigRat(234).negate().equals(-234)`
 
+`neq`
+---
+Alias for the `notEquals` function.
+
 `notEquals`
 ---
 Checks if two numbers are not equal.
@@ -227,6 +263,12 @@ Alias for `divide`.
 `plus`
 ---
 Alias for `add`.
+
+`pow`
+---
+Performs exponentiation. The argument will be parsed as a bigInt.
+
+ - `bigRat("3/2").pow(3)` => `bigRat("27/8")`
 
 `reciprocate`
 ---

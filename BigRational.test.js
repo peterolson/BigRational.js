@@ -20,6 +20,7 @@ var testResults = (function () {
         "1.05 = 105/100": bigRat("1.05").equals(105 / 100),
         "negate 234 = -234": bigRat(234).negate().equals(-234),
         "negate -54 = 54": bigRat(-54).negate().equals(54),
+        "bigRat(3).compareAbs(-4)": bigRat(3).compareAbs(-4) === -1,
         "abs -424 = 424": bigRat(-424).abs().equals(424),
         "abs 543333 = 543333": bigRat(543333).abs().equals(543333),
         "1.32543543 + 5.43537467567 = 6.76081010567": bigRat("1.32543543").add("5.43537467567").equals("6.76081010567"),
