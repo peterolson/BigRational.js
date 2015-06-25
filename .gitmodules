@@ -1,0 +1,3 @@
+[submodule "BigInteger.js"]
+	path = BigInteger.js
+	url = git@github.com:peterolson/BigInteger.js.git
