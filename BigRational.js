@@ -61,6 +61,12 @@
         var v = interpret(n, d);
         return this.minus(v.times(this.over(v).floor()));
     };
+    BigRational.prototype.pow = function (n) {
+        var v = bigInt(n);
+        var num = this.num.pow(v),
+            denom = this.denom.pow(v);
+        return reduce(num, denom);
+    };
 
     BigRational.prototype.floor = function (toBigInt) {
         var divmod = this.num.divmod(this.denom),
