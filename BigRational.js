@@ -1,9 +1,5 @@
-;var bigRat = (function () {
+;var bigRat = (function (bigInt) {
     "use strict";
-    var bigInt;
-    if (typeof require === "function") {
-        bigInt = require("big-integer");
-    }
 
     function BigRational(num, denom) {
         // Alias properties kept for backwards compatability
@@ -282,7 +278,7 @@
     parse.minusOne = parse(-1);
 
     return parse;
-})();
+})(typeof bigInt !== "undefined" ? bigInt : require("big-integer"));
 if (typeof module !== "undefined") {
     if (module.hasOwnProperty("exports")) {
         module.exports = bigRat;
