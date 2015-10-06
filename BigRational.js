@@ -214,11 +214,13 @@
                 return significand.over(exponent);
             }
         }
-        parts = n.split(".");
+        parts = n.trim().split(".");
         if(parts.length > 2) {
             throw new Error("Invalid input: too many '.' tokens");
         }
         if(parts.length > 1) {
+            var isNegative = parts[0][0] === '-';
+            if (isNegative) parts[0] = parts[0].slice(1);
             var intPart = new BigRational(bigInt(parts[0]), bigInt[1]);
             var length = parts[1].length;
             while(parts[1][0] === "0") {
@@ -227,8 +229,8 @@
             var exp = "1" + Array(length + 1).join("0");
             var decPart = reduce(bigInt(parts[1]), bigInt(exp));
             intPart = intPart.add(decPart);
-	    if (parts[0][0] === '-') intPart = intPart.negate();
-    	    return intPart;
+            if (isNegative) intPart = intPart.negate();
+            return intPart;
         }
         return new BigRational(bigInt(n), bigInt[1]);
     }
