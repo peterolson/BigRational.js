@@ -175,6 +175,9 @@
         while (decPart.slice(-1) === "0") {
             decPart = decPart.slice(0, -1);
         }
+        if (this.isNegative()) {
+          intPart = "-"+intPart;
+        }
         if (decPart === "") {
             return intPart;
         }
@@ -184,7 +187,7 @@
     BigRational.prototype.toString = function () {
         return String(this.num) + "/" + String(this.denom);
     };
-    
+
     BigRational.prototype.valueOf = function () {
         return this.num / this.denom;
     };
