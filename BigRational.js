@@ -161,19 +161,12 @@
         var n = this.num.divmod(this.denom);
         var intPart = n.quotient.toString();
         var remainder = parse(n.remainder.abs(), this.denom);
-        var decPart = "";
-        while (decPart.length <= digits) {
-            var i;
-            for (i = 0; i <= 10; i++) {
-                if (parse(decPart + i, "1" + Array(decPart.length + 2).join("0")).greater(remainder)) {
-                    i--;
-                    break;
-                }
+        var shiftedRemainder = remainder.times(bigInt("1e" + digits));
+        var decPart = shiftedRemainder.num.over(shiftedRemainder.denom).toString();
+        if (shiftedRemainder.num.mod(shiftedRemainder.denom).isZero()) {
+            while (decPart.slice(-1) === "0") {
+                decPart = decPart.slice(0, -1);
             }
-            decPart += i;
-        }
-        while (decPart.slice(-1) === "0") {
-            decPart = decPart.slice(0, -1);
         }
         if (this.isNegative()) {
           intPart = "-"+intPart;

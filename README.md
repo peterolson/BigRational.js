@@ -300,7 +300,7 @@ Alias for `multiply`.
 Converts a bigRational to a string in decimal notation, cut off after the number of digits specified in the `digits` argument. The default number of digits is 10.
 
  - `bigRat(1,3).toDecimal() === "0.33333333333"`
- - `bigRat(1,7).toDecimal(14) === "0.142857142857143"`
+ - `bigRat(1,7).toDecimal(14) === "0.14285714285714"`
 
 Override Methods
 ===
