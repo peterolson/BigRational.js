@@ -1,6 +1,6 @@
 {
   "name": "big-rational",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "author": "Peter Olson <peter.e.c.olson+npm@gmail.com>",
   "description": "An arbitrary length rational number library for Javascript",
   "contributors": [],
