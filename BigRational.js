@@ -163,6 +163,9 @@
         var remainder = parse(n.remainder.abs(), this.denom);
         var shiftedRemainder = remainder.times(bigInt("1e" + digits));
         var decPart = shiftedRemainder.num.over(shiftedRemainder.denom).toString();
+        if (decPart.length < digits) {
+            decPart = new Array(digits - decPart.length + 1).join("0") + decPart;
+        }
         if (shiftedRemainder.num.mod(shiftedRemainder.denom).isZero()) {
             while (decPart.slice(-1) === "0") {
                 decPart = decPart.slice(0, -1);

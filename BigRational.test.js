@@ -55,6 +55,8 @@ var testResults = (function () {
         "55/-75 toDecimal = -0.7333333333": bigRat("-55", "75").toDecimal() === '-0.7333333333', // Issue #18
         "7.108 toDecimal 2 = 7.10": bigRat("7.108").toDecimal(2) === "7.10", // Issue #20
         "1/7 toDecimal 14 = 0.14285714285714": bigRat(1, 7).toDecimal(14) === "0.14285714285714",
+        "17.027 toDecimal 2 = 17.02": bigRat(17.027183424215764).toDecimal(2) === "17.02", // Issue #21
+        "1 / 4096 toDecimal 5 = 0.00024": bigRat(1, 4096).toDecimal(5) === "0.00024",
         "valueOf -1.5 = -1.5": bigRat(-1.5).valueOf() === -1.5,
         "valueOf \" -1.5\" = -1.5": bigRat(" -1.5").valueOf() === -1.5,
         "valueOf \"-1.5 \" = -1.5": bigRat("-1.5 ").valueOf() === -1.5
