@@ -89,7 +89,7 @@ Returns the numerator of a bigRational. This will be a bigInt.
 
 `denominator`
 ---
-Returns the denominator of a bigRational. This will be a bigIn.t
+Returns the denominator of a bigRational. This will be a bigInt.
 
  - `bigRat(34, 3).denominator` => `bigInt(3)`
 
