@@ -159,7 +159,7 @@
     BigRational.prototype.toDecimal = function (digits) {
         digits = digits || 10;
         var n = this.num.divmod(this.denom);
-        var intPart = n.quotient.toString();
+        var intPart = n.quotient.abs().toString();
         var remainder = parse(n.remainder.abs(), this.denom);
         var shiftedRemainder = remainder.times(bigInt("1e" + digits));
         var decPart = shiftedRemainder.num.over(shiftedRemainder.denom).toString();
