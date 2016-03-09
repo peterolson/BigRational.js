@@ -26,8 +26,8 @@ describe("BigRational", function () {
     });
     describe("negation", function () {
         it("works", function () {
-            expect(bigRat(234).negate()).equals(-234);
-            expect(bigRat(-54).negate()).equals(54);
+            expect(bigRat(234).negate()).toEqual(-234);
+            expect(bigRat(-54).negate()).toEqual(54);
         });
     });
     describe("absolute value", function () {
@@ -130,24 +130,28 @@ describe("BigRational", function () {
         });
     });
     describe("toDecimal", function () {
-        expect(bigRat(9, 10).toDecimal() === "0.9").toBe(true); // Issue #2  
-        expect(bigRat("55", "-75").toDecimal() === bigRat("-55", "75").toDecimal()).toBe(true); // Issue #10
-        expect(bigRat("-55", "75").toDecimal() === '-0.7333333333').toBe(true); // Issue #18
-        expect(bigRat("7.108").toDecimal(2) === "7.10").toBe(true); // Issue #20
-        expect(bigRat(1, 7).toDecimal(14) === "0.14285714285714").toBe(true);
-        expect(bigRat(17.027183424215764).toDecimal(2) === "17.02").toBe(true); // Issue #21
-        expect(bigRat(1, 4096).toDecimal(5) === "0.00024").toBe(true);
-        expect(bigRat(-1).toDecimal() === "-1").toBe(true);
+        it("works", function () {
+            expect(bigRat(9, 10).toDecimal() === "0.9").toBe(true); // Issue #2  
+            expect(bigRat("55", "-75").toDecimal() === bigRat("-55", "75").toDecimal()).toBe(true); // Issue #10
+            expect(bigRat("-55", "75").toDecimal() === '-0.7333333333').toBe(true); // Issue #18
+            expect(bigRat("7.108").toDecimal(2) === "7.10").toBe(true); // Issue #20
+            expect(bigRat(1, 7).toDecimal(14) === "0.14285714285714").toBe(true);
+            expect(bigRat(17.027183424215764).toDecimal(2) === "17.02").toBe(true); // Issue #21
+            expect(bigRat(1, 4096).toDecimal(5) === "0.00024").toBe(true);
+            expect(bigRat(-1).toDecimal() === "-1").toBe(true);
+        });
     });
     describe("toString", function () {
     });
     describe("valueOf", function () {
-        expect(bigRat(1, 4) + bigRat(3 / 4) === 1).toBe(true);
-        expect(bigRat(1, 7).valueOf() === 1 / 7).toBe(true);  // Issue #1
-        expect(bigRat(-1).subtract(-0.9).valueOf() === -0.1).toBe(true); // Issue #9
+        it("works", function () {
+            expect(bigRat(1, 4) + bigRat(3 / 4) === 1).toBe(true);
+            expect(bigRat(1, 7).valueOf() === 1 / 7).toBe(true);  // Issue #1
+            expect(bigRat(-1).subtract(-0.9).valueOf() === -0.1).toBe(true); // Issue #9
 
-        expect(bigRat(-1.5).valueOf() === -1.5).toBe(true);
-        expect(bigRat(" -1.5").valueOf() === -1.5).toBe(true);
-        expect(bigRat("-1.5 ").valueOf() === -1.5).toBe(true);
+            expect(bigRat(-1.5).valueOf() === -1.5).toBe(true);
+            expect(bigRat(" -1.5").valueOf() === -1.5).toBe(true);
+            expect(bigRat("-1.5 ").valueOf() === -1.5).toBe(true);
+        });
     });
 });

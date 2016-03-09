@@ -147,10 +147,10 @@
         return new BigRational(this.num.negate(), this.denom);
     };
     BigRational.prototype.isNegative = function () {
-        return this.num.sign !== this.denom.sign;
+        return this.num.sign !== this.denom.sign && !this.num.isZero();
     };
     BigRational.prototype.isPositive = function () {
-        return this.num.sign === this.denom.sign;
+        return this.num.sign === this.denom.sign && !this.num.isZero();
     };
     BigRational.prototype.isZero = function () {
         return this.num.isZero();
