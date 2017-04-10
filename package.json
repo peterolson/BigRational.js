@@ -23,8 +23,8 @@
     "arithmetic"
   ],
   "dependencies" : {
-	"big-integer" :  "1.5.x"
-  }, 
+	"big-integer" :  "^1.6.19"
+  },
   "license": "WTFPL",
   "engines": {
     "node": ">=0.6"
