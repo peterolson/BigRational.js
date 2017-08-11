@@ -157,7 +157,7 @@
     };
 
     BigRational.prototype.toDecimal = function (digits) {
-        digits = digits || 10;
+        digits = typeof digits === "number" ? digits : 10;
         var n = this.num.divmod(this.denom);
         var intPart = n.quotient.abs().toString();
         var remainder = parse(n.remainder.abs(), this.denom);
@@ -171,6 +171,7 @@
                 decPart = decPart.slice(0, -1);
             }
         }
+		if(digits < 1) decPart = "";
         if (this.isNegative()) {
           intPart = "-"+intPart;
         }

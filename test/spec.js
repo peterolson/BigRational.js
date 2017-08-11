@@ -139,6 +139,7 @@ describe("BigRational", function () {
             expect(bigRat(17.027183424215764).toDecimal(2) === "17.02").toBe(true); // Issue #21
             expect(bigRat(1, 4096).toDecimal(5) === "0.00024").toBe(true);
             expect(bigRat(-1).toDecimal() === "-1").toBe(true);
+			expect(bigRat(6.543).toDecimal(0) === "6").toBe(true); // Issue #30
         });
     });
     describe("toString", function () {
