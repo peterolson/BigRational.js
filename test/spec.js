@@ -153,6 +153,8 @@ describe("BigRational", function () {
             expect(bigRat(-1.5).valueOf() === -1.5).toBe(true);
             expect(bigRat(" -1.5").valueOf() === -1.5).toBe(true);
             expect(bigRat("-1.5 ").valueOf() === -1.5).toBe(true);
+			
+			expect(+bigRat("1e350").add("1").over("2e350") === 0.5).toBe(true); // Issue #31
         });
     });
 });

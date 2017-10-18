@@ -186,6 +186,9 @@
     };
 
     BigRational.prototype.valueOf = function () {
+		if(!isFinite(+this.num) || !isFinite(+this.denom)) {
+			return +this.toDecimal(64);
+		}
         return this.num / this.denom;
     };
 
