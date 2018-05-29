@@ -171,7 +171,7 @@
                 decPart = decPart.slice(0, -1);
             }
         }
-		if(digits < 1) decPart = "";
+        if(digits < 1) decPart = "";
         if (this.isNegative()) {
           intPart = "-"+intPart;
         }
@@ -186,9 +186,9 @@
     };
 
     BigRational.prototype.valueOf = function () {
-		if(!isFinite(+this.num) || !isFinite(+this.denom)) {
-			return +this.toDecimal(64);
-		}
+        if(!isFinite(+this.num) || !isFinite(+this.denom)) {
+            return +this.toDecimal(64);
+        }
         return this.num / this.denom;
     };
 
@@ -253,6 +253,15 @@
         var denom;
 
         var text = String(a);
+        var persents = text.split("%");
+        if(persents.length>2){
+            throw new Error("Invalid input: too many '%' tokens");
+        }
+        if(persents.length>1){
+            text = persents[0];
+            var persent = true;
+        }
+        
         var texts = text.split("/");
         if(texts.length > 2) {
             throw new Error("Invalid input: too many '/' tokens");
@@ -271,11 +280,11 @@
                     num = num.subtract(parts[1]);
                 }
                 denom = bigInt(texts[1]);
-                return reduce(num, denom);
+                return (persent) ? reduce(num, denom).divide(bigRat('100')) : reduce(num, denom);
             }
-            return reduce(bigInt(texts[0]), bigInt(texts[1]));
+            return (persent) ? reduce(bigInt(texts[0]), bigInt(texts[1])).divide(bigRat('100')) : reduce(bigInt(texts[0]), bigInt(texts[1]));
         }
-        return parseDecimal(text);
+        return (persent) ? parseDecimal(text).divide(bigRat('100')) : parseDecimal(text);
     }
 
     parse.zero = parse(0);
