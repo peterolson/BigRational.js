@@ -238,6 +238,10 @@
         return new BigRational(bigInt(n), bigInt[1]);
     }
     function parse(a, b) {
+        if (typeof a === 'object'){
+            b = a["denom"] || a["denominator"];
+            a = a["num"] || a["numerator"];
+        }
         if(!a) {
             return new BigRational(bigInt(0), bigInt[1]);
         }
