@@ -140,6 +140,24 @@ describe("BigRational", function () {
             expect(bigRat(1, 4096).toDecimal(5) === "0.00024").toBe(true);
             expect(bigRat(-1).toDecimal() === "-1").toBe(true);
 			expect(bigRat(6.543).toDecimal(0) === "6").toBe(true); // Issue #30
+			
+			//test percents
+			expect(bigRat("0.35%").toDecimal() === "0.0035").toBe(true); // Issue #22
+			expect(bigRat("354.25%").toDecimal(2) === "3.54").toBe(true);
+			expect(bigRat("2_1/3%").toDecimal(64) === "0.0233333333333333333333333333333333333333333333333333333333333333").toBe(true);
+			expect(bigRat("1/3%").toDecimal(0) === "0").toBe(true);
+			expect(bigRat("0.00003%").toDecimal() === "0.0000003").toBe(true);
+			
+			//test percents
+			expect(bigRat('0.35%').toString() === "7/2000").toBe(true); 		// Issue #22
+			expect(bigRat("354.25%").toString() === "1417/400").toBe(true);
+			expect(bigRat("2_1/3%").toString() === "7/300").toBe(true);
+			expect(bigRat("1/3%").toString() === "1/300").toBe(true);
+			expect(bigRat("0.00003%").toString() === "3/10000000").toBe(true);
+		
+			//test bigrational from json stringify object							//Issue #26
+			expect(bigRat(JSON.parse(JSON.stringify(bigRat("2_1/3")))).toString() === "7/3").toBe(true);
+		
         });
     });
     describe("toString", function () {
