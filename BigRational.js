@@ -265,13 +265,13 @@
         var denom;
 
         var text = String(a);
-        var persents = text.split("%");
-        if(persents.length>2){
+        var percents = text.split("%");
+        if(percents.length>2){
             throw new Error("Invalid input: too many '%' tokens");
         }
-        if(persents.length>1){
-            text = persents[0];
-            var persent = true;
+        if(percents.length>1){
+            text = percents[0];
+            var percent = true;
         }
         
         var texts = text.split("/");
@@ -292,11 +292,11 @@
                     num = num.subtract(parts[1]);
                 }
                 denom = bigInt(texts[1]);
-                return (persent) ? reduce(num, denom).divide(bigRat('100')) : reduce(num, denom);
+                return (percent) ? reduce(num, denom).divide(bigRat('100')) : reduce(num, denom);
             }
-            return (persent) ? reduce(bigInt(texts[0]), bigInt(texts[1])).divide(bigRat('100')) : reduce(bigInt(texts[0]), bigInt(texts[1]));
+            return (percent) ? reduce(bigInt(texts[0]), bigInt(texts[1])).divide(bigRat('100')) : reduce(bigInt(texts[0]), bigInt(texts[1]));
         }
-        return (persent) ? parseDecimal(text).divide(bigRat('100')) : parseDecimal(text);
+        return (percent) ? parseDecimal(text).divide(bigRat('100')) : parseDecimal(text);
     }
 
     parse.zero = parse(0);
