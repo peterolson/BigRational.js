@@ -238,7 +238,15 @@
         return new BigRational(bigInt(n), bigInt[1]);
     }
     function parse(a, b) {
-        if (typeof a === 'object'){
+        if(
+            a!==null
+            && !(a instanceof BigRational)
+            && ! bigInt.isInstance(a)
+
+            && a instanceof Object
+            && typeof a === 'object'
+        )
+        {
             b = a["denom"] || a["denominator"];
             a = a["num"] || a["numerator"];
         }
