@@ -171,7 +171,7 @@
                 decPart = decPart.slice(0, -1);
             }
         }
-		if(digits < 1) decPart = "";
+        if(digits < 1) decPart = "";
         if (this.isNegative()) {
           intPart = "-"+intPart;
         }
@@ -186,9 +186,9 @@
     };
 
     BigRational.prototype.valueOf = function () {
-		if(!isFinite(+this.num) || !isFinite(+this.denom)) {
-			return +this.toDecimal(64);
-		}
+        if(!isFinite(+this.num) || !isFinite(+this.denom)) {
+            return +this.toDecimal(64);
+        }
         return this.num / this.denom;
     };
 
@@ -238,6 +238,18 @@
         return new BigRational(bigInt(n), bigInt[1]);
     }
     function parse(a, b) {
+        if(
+            a!==null
+            && !(a instanceof BigRational)
+            && ! bigInt.isInstance(a)
+
+            && a instanceof Object
+            && typeof a === 'object'
+        )
+        {
+            b = a["denom"] || a["denominator"];
+            a = a["num"] || a["numerator"];
+        }
         if(!a) {
             return new BigRational(bigInt(0), bigInt[1]);
         }
@@ -253,6 +265,15 @@
         var denom;
 
         var text = String(a);
+        var percents = text.split("%");
+        if(percents.length>2){
+            throw new Error("Invalid input: too many '%' tokens");
+        }
+        if(percents.length>1){
+            text = percents[0];
+            var percent = true;
+        }
+        
         var texts = text.split("/");
         if(texts.length > 2) {
             throw new Error("Invalid input: too many '/' tokens");
@@ -271,11 +292,11 @@
                     num = num.subtract(parts[1]);
                 }
                 denom = bigInt(texts[1]);
-                return reduce(num, denom);
+                return (percent) ? reduce(num, denom).divide(bigRat('100')) : reduce(num, denom);
             }
-            return reduce(bigInt(texts[0]), bigInt(texts[1]));
+            return (percent) ? reduce(bigInt(texts[0]), bigInt(texts[1])).divide(bigRat('100')) : reduce(bigInt(texts[0]), bigInt(texts[1]));
         }
-        return parseDecimal(text);
+        return (percent) ? parseDecimal(text).divide(bigRat('100')) : parseDecimal(text);
     }
 
     parse.zero = parse(0);
