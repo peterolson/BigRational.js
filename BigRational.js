@@ -1,4 +1,4 @@
-;var bigRat = (function (bigInt) {
+; var bigRat = (function (bigInt) {
     "use strict";
 
     function BigRational(num, denom) {
@@ -68,7 +68,7 @@
     BigRational.prototype.floor = function (toBigInt) {
         var divmod = this.num.divmod(this.denom),
             floor;
-        if (divmod.remainder.isZero() || !divmod.quotient.sign) {
+        if (divmod.remainder.isZero() || !divmod.quotient.isNegative()) {
             floor = divmod.quotient;
         }
         else floor = divmod.quotient.prev();
@@ -78,7 +78,7 @@
     BigRational.prototype.ceil = function (toBigInt) {
         var divmod = this.num.divmod(this.denom),
             ceil;
-        if (divmod.remainder.isZero() || divmod.quotient.sign) {
+        if (divmod.remainder.isZero() || divmod.quotient.isNegative()) {
             ceil = divmod.quotient;
         }
         else ceil = divmod.quotient.next();
@@ -101,7 +101,7 @@
         if (this.denom.equals(v.denom)) {
             return this.num.compare(v.num);
         }
-        var comparison = this.denom.sign === v.denom.sign ? 1 : -1;
+        var comparison = this.denom.isNegative() === v.denom.isNegative() ? 1 : -1;
         return comparison * this.num.times(v.denom).compare(v.num.times(this.denom));
     };
     BigRational.prototype.compareTo = BigRational.prototype.compare;
@@ -141,16 +141,16 @@
         return this.negate();
     };
     BigRational.prototype.negate = function () {
-        if (this.denom.sign) {
+        if (this.denom.isNegative()) {
             return new BigRational(this.num, this.denom.negate());
         }
         return new BigRational(this.num.negate(), this.denom);
     };
     BigRational.prototype.isNegative = function () {
-        return this.num.sign !== this.denom.sign && !this.num.isZero();
+        return this.num.isNegative() !== this.denom.isNegative() && !this.num.isZero();
     };
     BigRational.prototype.isPositive = function () {
-        return this.num.sign === this.denom.sign && !this.num.isZero();
+        return this.num.isNegative() === this.denom.isNegative() && !this.num.isZero();
     };
     BigRational.prototype.isZero = function () {
         return this.num.isZero();
@@ -171,9 +171,9 @@
                 decPart = decPart.slice(0, -1);
             }
         }
-		if(digits < 1) decPart = "";
+        if (digits < 1) decPart = "";
         if (this.isNegative()) {
-          intPart = "-"+intPart;
+            intPart = "-" + intPart;
         }
         if (decPart === "") {
             return intPart;
@@ -186,9 +186,9 @@
     };
 
     BigRational.prototype.valueOf = function () {
-		if(!isFinite(+this.num) || !isFinite(+this.denom)) {
-			return +this.toDecimal(64);
-		}
+        if (!isFinite(+this.num) || !isFinite(+this.denom)) {
+            return +this.toDecimal(64);
+        }
         return this.num / this.denom;
     };
 
@@ -197,36 +197,36 @@
     }
     function parseDecimal(n) {
         var parts = n.split(/e/i);
-        if(parts.length > 2) {
+        if (parts.length > 2) {
             throw new Error("Invalid input: too many 'e' tokens");
         }
-        if(parts.length > 1) {
+        if (parts.length > 1) {
             var isPositive = true;
-            if(parts[1][0] === "-") {
+            if (parts[1][0] === "-") {
                 parts[1] = parts[1].slice(1);
                 isPositive = false;
             }
-            if(parts[1][0] === "+") {
+            if (parts[1][0] === "+") {
                 parts[1] = parts[1].slice(1);
             }
             var significand = parseDecimal(parts[0]);
             var exponent = new BigRational(bigInt(10).pow(parts[1]), bigInt[1]);
-            if(isPositive) {
+            if (isPositive) {
                 return significand.times(exponent);
             } else {
                 return significand.over(exponent);
             }
         }
         parts = n.trim().split(".");
-        if(parts.length > 2) {
+        if (parts.length > 2) {
             throw new Error("Invalid input: too many '.' tokens");
         }
-        if(parts.length > 1) {
+        if (parts.length > 1) {
             var isNegative = parts[0][0] === '-';
             if (isNegative) parts[0] = parts[0].slice(1);
             var intPart = new BigRational(bigInt(parts[0]), bigInt[1]);
             var length = parts[1].length;
-            while(parts[1][0] === "0") {
+            while (parts[1][0] === "0") {
                 parts[1] = parts[1].slice(1);
             }
             var exp = "1" + Array(length + 1).join("0");
@@ -238,10 +238,10 @@
         return new BigRational(bigInt(n), bigInt[1]);
     }
     function parse(a, b) {
-        if(!a) {
+        if (!a) {
             return new BigRational(bigInt(0), bigInt[1]);
         }
-        if(b) {
+        if (b) {
             return reduce(bigInt(a), bigInt(b));
         }
         if (bigInt.isInstance(a)) {
@@ -254,18 +254,18 @@
 
         var text = String(a);
         var texts = text.split("/");
-        if(texts.length > 2) {
+        if (texts.length > 2) {
             throw new Error("Invalid input: too many '/' tokens");
         }
-        if(texts.length > 1) {
+        if (texts.length > 1) {
             var parts = texts[0].split("_");
-            if(parts.length > 2) {
+            if (parts.length > 2) {
                 throw new Error("Invalid input: too many '_' tokens");
             }
-            if(parts.length > 1) {
+            if (parts.length > 1) {
                 var isPositive = parts[0][0] !== "-";
                 num = bigInt(parts[0]).times(texts[1]);
-                if(isPositive) {
+                if (isPositive) {
                     num = num.add(parts[1]);
                 } else {
                     num = num.subtract(parts[1]);
